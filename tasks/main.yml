@@ -1,0 +1,38 @@
+---
+- name: "{{ ct_docker_registry_task_prefix }} enable local storage"
+  include_vars: "local-storage.yml"
+  when: ct_docker_registry_enable_local_storage
+
+- name: "{{ ct_docker_registry_task_prefix }} create directories"
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0755
+    recurse: true
+  loop:
+    - "{{ ct_docker_registry_path_srv }}"
+    - "{{ ct_docker_registry_path_data }}"
+    - "{{ ct_docker_registry_path_cfg }}"
+  
+- name: "{{ ct_docker_registry_task_prefix }} create config {{ ct_docker_registry_path_cfg }}/{{ ct_docker_registry_file_cfg }}"
+  template:
+    src: "{{ ct_docker_registry_template_cfg }}"
+    dest: "{{ ct_docker_registry_path_cfg }}/{{ ct_docker_registry_file_cfg }}"
+
+- name: "{{ ct_docker_registry_task_prefix }} provision container {{ ct_docker_registry_ct_name }}"
+  docker_container:
+    name: "{{ ct_docker_registry_ct_name }}"
+    image: "{{ ct_docker_registry_ct_image }}"
+    ports: "{{ ct_docker_registry_ct_ports }}"
+    volumes: "{{ ct_docker_registry_ct_volumes }}"
+    env: "{{ ct_docker_registry_ct_env }}"
+    restart_policy: "{{ ct_docker_registry_ct_restart_policy }}"
+    state: "{{ ct_docker_registry_ct_state }}"
+    pull: "{{ ct_docker_registry_ct_pull | bool }}"
+    recreate: "{{ ct_docker_registry_ct_recreate | bool }}"
+    restart: "{{ ct_docker_registry_ct_restart | bool }}"
+    etc_hosts: "{{ ct_docker_registry_ct_etc_hosts }}"
+
+
+
+...

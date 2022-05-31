@@ -1,0 +1,39 @@
+version: 0.1
+http:
+  addr: :{{ ct_docker_registry_ct_port }}
+  headers:
+    X-Content-Type-Options: [nosniff]
+health:
+  storagedriver:
+    enabled: true
+    interval: 10s
+    threshold: 3
+log:
+  fields:
+    service: registry
+storage:
+  cache:
+    blobdescriptor: inmemory
+{% if ct_docker_registry_enable_local_storage %}
+  filesystem:
+    rootdirectory: /var/lib/registry
+{% endif %}
+{% if ct_docker_registry_enable_s3_storage %}
+  s3:
+    accesskey: {{ ct_docker_registry_s3_akey }}
+    secretkey: {{ ct_docker_registry_s3_skey }}
+    region: {{ ct_docker_registry_s3_region }}
+    regionendpoint: {{ ct_docker_registry_s3_endpoint }}
+    bucket: {{ ct_docker_registry_s3_bucket }}
+{% if ct_docker_registry_s3_root | length > 0 %}
+    rootdirectory: {{ ct_docker_registry_s3_root }}
+{% endif %}
+{% endif %}
+{% if ct_docker_registry_enable_mirroring %}
+proxy:
+  remoteurl: {{ ct_docker_registry_mirror_url }}
+{% if ct_docker_registry_enable_mirror_auth %}
+  username: {{ ct_docker_registry_mirror_username }}
+  password: {{ ct_docker_registry_mirror_password }}
+{% endif %}
+{% endif %}

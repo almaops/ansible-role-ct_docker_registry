@@ -1,0 +1,4 @@
+---
+ct_docker_registry_ct_volumes_local_storage:
+  - "{{ ct_docker_registry_path_data }}:/var/lib/registry"
+...

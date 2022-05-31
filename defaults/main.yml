@@ -1,0 +1,51 @@
+---
+ct_docker_registry_task_prefix: "=== CT_DOCKER_REGISTRY ==="
+
+ct_docker_registry_enable_mirroring: false
+ct_docker_registry_enable_mirror_auth: false
+ct_docker_registry_enable_s3_storage: false
+ct_docker_registry_enable_local_storage: false
+
+ct_docker_registry_path_srv: "/srv/{{ ct_docker_registry_ct_name }}"
+ct_docker_registry_path_data: "{{ ct_docker_registry_path_srv }}/data"
+
+ct_docker_registry_template_cfg: "config.yml.j2"
+ct_docker_registry_path_cfg: "{{ ct_docker_registry_path_srv }}/config"
+ct_docker_registry_file_cfg: "config.yml"
+
+ct_docker_registry_bind_addr: "127.0.0.1"
+ct_docker_registry_port: "5000"
+ct_docker_registry_ct_port: "{{ ct_docker_registry_port }}"
+
+ct_docker_registry_ct_volumes_cfg:
+  - "{{ ct_docker_registry_path_cfg }}/{{ ct_docker_registry_file_cfg }}:/etc/docker/registry/config.yml"
+ct_docker_registry_ct_volumes_local_storage: []
+#"{{ ct_docker_registry_path_data }}:/var/lib/registry"
+
+ct_docker_registry_ct_name: "registry"
+ct_docker_registry_ct_image: "registry:{{ ct_docker_registry_ct_image_tag }}"
+ct_docker_registry_ct_image_tag: "2"
+ct_docker_registry_ct_restart_policy: "always"
+ct_docker_registry_ct_pull: "false"
+ct_docker_registry_ct_recreate: "true"
+ct_docker_registry_ct_restart: "true"
+ct_docker_registry_ct_state: "started"
+ct_docker_registry_ct_ports:
+  - "{{ ct_docker_registry_bind_addr }}:{{ ct_docker_registry_port }}:{{ ct_docker_registry_ct_port }}"
+ct_docker_registry_ct_etc_hosts: {}
+ct_docker_registry_ct_env: {}
+ct_docker_registry_ct_volumes: "{{ ct_docker_registry_ct_volumes_cfg + ct_docker_registry_ct_volumes_local_storage }}"
+
+# Configuration settings
+ct_docker_registry_mirror_url: "https://registry-1.docker.io"
+#ct_docker_registry_mirror_username: "{{ undef(hint='specify mirror username') }}"
+#ct_docker_registry_mirror_password: "{{ undef(hint=specify mirror passowrd') }}"
+
+#ct_docker_registry_s3_akey: "{{ undef(hint='specify access key for s3 storage') }}"
+#ct_docker_registry_s3_skey: "{{ undef(hint='specify secret key for s3 stoarge') }}"
+#ct_docker_registry_s3_region: "{{ undef(hint='specify region for s3 storage') }}"
+#ct_docker_registry_s3_endpoint: "{{ undef(hint='specify endpoint for s3 storage') }}"
+#ct_docker_registry_s3_bucket: "{{ undef(hint='specify bucket for s3 storage') }}"
+ct_docker_registry_s3_root: ""
+
+...
