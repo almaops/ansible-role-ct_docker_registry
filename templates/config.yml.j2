@@ -24,6 +24,7 @@ storage:
     secretkey: {{ ct_docker_registry_s3_skey }}
     region: {{ ct_docker_registry_s3_region }}
     regionendpoint: {{ ct_docker_registry_s3_endpoint }}
+    secure: {{ ct_docker_registry_s3_secure }}
     bucket: {{ ct_docker_registry_s3_bucket }}
 {% if ct_docker_registry_s3_root | length > 0 %}
     rootdirectory: {{ ct_docker_registry_s3_root }}

@@ -46,6 +46,7 @@ ct_docker_registry_mirror_url: "https://registry-1.docker.io"
 #ct_docker_registry_s3_region: "{{ undef(hint='specify region for s3 storage') }}"
 #ct_docker_registry_s3_endpoint: "{{ undef(hint='specify endpoint for s3 storage') }}"
 #ct_docker_registry_s3_bucket: "{{ undef(hint='specify bucket for s3 storage') }}"
+ct_docker_registry_s3_secure: "true" # true/false
 ct_docker_registry_s3_root: ""
 
 ...
